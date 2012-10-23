@@ -50,7 +50,7 @@ namespace AddonTemplate.Web
 			}
 
 			// TODO: Verify credentials
-			if (credential.UserName != "foo" || credential.Password != "123456")
+            if (credential.UserName != "appharbor" || credential.Password != "baf")
 			{
 				return false;
 			}

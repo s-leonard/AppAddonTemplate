@@ -1,10 +1,15 @@
 {
-  "id": "addon-template",
+  "id": "AppAddon",
+  "name": "AppAddon",
   "api": {
-    "config_vars": [ "CONFIG_VAR" ],
-    "password": "PASSWORD",
-    "sso_salt": "SALT",
-    "production": "https://example.apphb.com/",
-    "test": "http://localhost:8080/"
+    "config_vars": [
+      "ApiKey", "ApiSecretKey"
+    ],
+    "production": "http://appaddon.apphb.com/",
+    "test": "http://appaddon.apphb.com/",
+    "username": "appharbor",
+    "password": "baf",
+    "sso_salt": "bof"
   }
 }
+

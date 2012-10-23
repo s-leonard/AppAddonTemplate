@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using AddonTemplate.Web.Models;
 using AddonTemplate.Web.ViewModels;
+using PetaPoco;
 using RestSharp;
 using HttpCookie = System.Web.HttpCookie;
 
@@ -11,43 +12,80 @@ namespace AddonTemplate.Web.Controllers
 {
 	public class ResourceController : Controller
 	{
-		[RequireBasicAuthentication("AppHarbor")]
-		public ActionResult Create(ProvisioningRequest provisionRequest)
-		{
-			Plan plan;
-			if (!Enum.TryParse<Plan>(provisionRequest.plan, true, out plan))
-			{
-				throw new ArgumentException(string.Format("Plan \"{0}\" is not a valid plan", provisionRequest.plan));
-			}
+        //[RequireBasicAuthentication("AppHarbor")]
+        //public ActionResult Create(ProvisioningRequest provisionRequest)
+        //{
+        //    Plan plan;
+        //    if (!Enum.TryParse<Plan>(provisionRequest.plan, true, out plan))
+        //    {
+        //        throw new ArgumentException(string.Format("Plan \"{0}\" is not a valid plan", provisionRequest.plan));
+        //    }
 
-			var resource = new Resource
-			{
-				CreatedBy = string.Format("{0};{1}", Request.GetForwardedHostAddress(), User.Identity.Name),
-				Id = Guid.NewGuid(),
-				Plan = plan,
-				ProviderId = provisionRequest.heroku_id,
-				ProvisionStatus = ProvisionStatus.Provisioning,
-			};
+        //    var resource = new Resource
+        //    {
+        //        CreatedBy = string.Format("{0};{1}", Request.GetForwardedHostAddress(), User.Identity.Name),
+        //        Id = Guid.NewGuid(),
+        //        Plan = plan,
+        //        ProviderId = provisionRequest.heroku_id,
+        //        ProvisionStatus = ProvisionStatus.Provisioning,
+        //    };
 			
-			// TODO: Persist the resource
+        //    // TODO: Persist the resource
 
-			// TODO: Provision the resource
+        //    // TODO: Provision the resource
 
-			resource.ProvisionStatus = ProvisionStatus.Provisioned;
+        //    resource.ProvisionStatus = ProvisionStatus.Provisioned;
 			
-			// TODO: Persist the status change
+        //    // TODO: Persist the status change
 
-			var output = new
-			{
-				id = resource.Id,
-				config = new
-				{
-					CONFIG_VAR = "CONFIGURATION_VALUE",
-				}
-			};
+        //    var output = new
+        //    {
+        //        id = resource.Id,
+        //        config = new
+        //        {
+        //            CONFIG_VAR = "CONFIGURATION_VALUE",
+        //        }
+        //    };
 
-			return Json(output);
-		}
+        //    return Json(output);
+        //}
+
+
+
+        [RequireBasicAuthentication("AppHarbor")]
+        public ActionResult Create(ProvisioningRequest provisionRequest)
+        {
+            Plan plan;
+            if (!Enum.TryParse<Plan>(provisionRequest.plan, true, out plan))
+            {
+                throw new ArgumentException(string.Format("Plan \"{0}\" is not a valid plan", provisionRequest.plan));
+            }
+            var db = new Database("DefaultConnection");
+            var purchase = new Purchase()
+            {
+                CreatedBy = string.Format("{0};{1}", Request.GetForwardedHostAddress(), User.Identity.Name),
+                UniqueId = Guid.NewGuid().ToString(),
+                Plan = plan,
+                ProviderId = provisionRequest.heroku_id,
+                ProvisionStatus = ProvisionStatus.Provisioning,
+                ApiKey = Guid.NewGuid().ToString(),
+                ApiSecretKey = Guid.NewGuid().ToString()
+            };
+            // TODO: Provision the resource
+            purchase.ProvisionStatus = ProvisionStatus.Provisioned;
+            Purchase.Save(db, purchase);
+            var output = new
+            {
+                id = purchase.UniqueId,
+                config = new
+                {
+                    CONFIG_ApiKey = purchase.ApiKey,
+                    CONFIG_ApiSecretKey = purchase.ApiSecretKey
+                }
+            };
+
+            return Json(output, JsonRequestBehavior.AllowGet);
+        }
 
 		[RequireBasicAuthentication("AppHarbor")]
 		public ActionResult Destroy(Guid id)
