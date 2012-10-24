@@ -20,7 +20,7 @@ namespace AddonTemplate.Web.Controllers
                     id = Guid.NewGuid().ToString(),
                     config = new
                         {
-                            APPADDON_URL = "http://appaddon.apphb.com/",
+                            APPADDON_URL = "http://appaddon.apphb.com?apikey=1234",
                         }
                 };
             Emailer.SendEmail("Addon Debug Response", output.ToString());
@@ -75,7 +75,7 @@ namespace AddonTemplate.Web.Controllers
                 id = Guid.NewGuid().ToString(),
                 config = new
                 {
-                    APPADDON_URL = "http://appaddon.apphb.com/",
+                    APPADDON_URL = "http://appaddon.apphb.com?apikey=1234",
                 }
             };
             Emailer.SendEmail("Addon Debug Response", output.ToString());
