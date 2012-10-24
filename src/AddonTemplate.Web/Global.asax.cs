@@ -45,7 +45,7 @@ namespace AddonTemplate.Web
                 {
                     sb.Append("<br/> Form Val: " + key + " val: " + Request.Form[key]);
                 }
-                sb.Append("<br/> Header Content" + Request.Headers.);
+                
                 sb.Append("<br/> Request Method" + Request.HttpMethod);
                 sb.Append("<br/> Request Request Context" + Request.RequestContext);
                 sb.Append("<br/> Request Request Type" + Request.RequestType);
