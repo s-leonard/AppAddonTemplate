@@ -1,0 +1,9 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+ @using (Html.BeginForm("Index", "Resource", FormMethod.Post, new { @class = "form-horizontal" }))
+ {
+     <input type="submit" value="Create"/>
+ }
