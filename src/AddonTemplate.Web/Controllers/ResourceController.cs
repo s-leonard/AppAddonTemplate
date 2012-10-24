@@ -12,6 +12,12 @@ namespace AddonTemplate.Web.Controllers
 {
 	public class ResourceController : Controller
 	{
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         //[RequireBasicAuthentication("AppHarbor")]
         //public ActionResult Create(ProvisioningRequest provisionRequest)
         //{
