@@ -41,7 +41,10 @@ namespace AddonTemplate.Web
                 {
                     sb.Append("<br/> Header: " + header + " val: " + Request.Headers[header.ToString()]);
                 }
-
+                foreach (var key in Request.Form.AllKeys)
+                {
+                    sb.Append("<br/> Form Val: " + key + " val: " + Request.Form[key]);
+                }
                 Emailer.SendEmail("Addon Debug Info", sb.ToString());
             }
             catch (Exception ex)
