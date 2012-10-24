@@ -151,7 +151,7 @@ namespace AddonTemplate.Web.Controllers
 			{
 				Header = headerResponse.Content,
 			};
-
+            
 			return View(viewModel);
 		}
 
