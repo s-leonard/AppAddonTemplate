@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Controllers\HerokuController.cs" />
     <Compile Include="Controllers\ResourceController.cs" />
+    <Compile Include="Emailer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

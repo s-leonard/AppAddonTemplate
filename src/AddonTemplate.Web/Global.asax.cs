@@ -33,12 +33,6 @@ namespace AddonTemplate.Web
         {
             try
             {
-                var client = new SmtpClient("email-smtp.us-east-1.amazonaws.com", 587);
-
-               client.EnableSsl = true;
-
-               client.Credentials = new NetworkCredential("AKIAIETZDMTH5OPB3VMA", "AnHlEOWHR6qAaeX+tO5ajSLj1yHS/R+QBEcAAhTJp46O");
-
                 var sb = new StringBuilder();
                 sb.Append("<br/> Refer: " + Request.UrlReferrer);
                 sb.Append("<br/> Url: " + Request.Url.AbsoluteUri);
@@ -48,16 +42,7 @@ namespace AddonTemplate.Web
                     sb.Append("<br/> Header: " + header + " val: " + Request.Headers[header.ToString()]);
                 }
 
-                var message = new MailMessage()
-                    {
-                        From = new MailAddress("sleonard84@msn.com", "Steve"),
-                        Subject = "Addon Debug Info",
-                        Body = sb.ToString(),
-                        IsBodyHtml=true
-                    };
-                message.To.Add(new MailAddress("sleonard84@msn.com", "Steve"));
-
-                client.Send(message);
+                Emailer.SendEmail("Addon Debug Info", sb.ToString());
             }
             catch (Exception ex)
             {

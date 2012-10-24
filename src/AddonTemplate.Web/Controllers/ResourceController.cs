@@ -15,10 +15,19 @@ namespace AddonTemplate.Web.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var output = new
+                {
+                    id = Guid.NewGuid().ToString(),
+                    config = new
+                        {
+                            APPADDON_URL = "http://appaddon.apphb.com/",
+                        }
+                };
+            Emailer.SendEmail("Addon Debug Response", output.ToString());
+            return Json(output, JsonRequestBehavior.AllowGet);
         }
 
-        //[RequireBasicAuthentication("AppHarbor")]
+	    //[RequireBasicAuthentication("AppHarbor")]
         //public ActionResult Create(ProvisioningRequest provisionRequest)
         //{
         //    Plan plan;
@@ -69,7 +78,7 @@ namespace AddonTemplate.Web.Controllers
                     APPADDON_URL = "http://appaddon.apphb.com/",
                 }
             };
-
+            Emailer.SendEmail("Addon Debug Response", output.ToString());
             return Json(output, JsonRequestBehavior.AllowGet);
 
 
