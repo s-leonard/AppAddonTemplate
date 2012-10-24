@@ -13,19 +13,19 @@ namespace AddonTemplate.Web.Controllers
 	public class ResourceController : Controller
 	{
 
-        public ActionResult Index()
-        {
-            var output = new
-                {
-                    id = Guid.NewGuid().ToString(),
-                    config = new
-                        {
-                            APPADDON_URL = "http://appaddon.apphb.com?apikey=1234",
-                        }
-                };
-            Emailer.SendEmail("Addon Debug Response", output.ToString());
-            return Json(output, JsonRequestBehavior.AllowGet);
-        }
+        //public ActionResult Index()
+        //{
+        //    var output = new
+        //        {
+        //            id = Guid.NewGuid().ToString(),
+        //            config = new
+        //                {
+        //                    APPADDON_URL = "http://appaddon.apphb.com?apikey=1234",
+        //                }
+        //        };
+        //    Emailer.SendEmail("Addon Debug Response", output.ToString());
+        //    return Json(output, JsonRequestBehavior.AllowGet);
+        //}
 
 	    //[RequireBasicAuthentication("AppHarbor")]
         //public ActionResult Create(ProvisioningRequest provisionRequest)
@@ -68,6 +68,8 @@ namespace AddonTemplate.Web.Controllers
 
 
         [RequireBasicAuthentication("AppHarbor")]
+        [ActionName("Index")]
+        [HttpPost]
         public ActionResult Create(ProvisioningRequest provisionRequest)
         {
             var output = new
@@ -75,7 +77,7 @@ namespace AddonTemplate.Web.Controllers
                 id = Guid.NewGuid().ToString(),
                 config = new
                 {
-                    APPADDON_URL = "http://appaddon.apphb.com?apikey=1234",
+                    APPADDON_URL = "http://appaddon.apphb.com?apikey=create",
                 }
             };
             Emailer.SendEmail("Addon Debug Response", output.ToString());
@@ -115,6 +117,8 @@ namespace AddonTemplate.Web.Controllers
         }
 
 		[RequireBasicAuthentication("AppHarbor")]
+        [ActionName("Index")]
+        [HttpDelete]
 		public ActionResult Destroy(Guid id)
 		{
 			// TODO: Fetch the resource from persistance store
@@ -133,6 +137,8 @@ namespace AddonTemplate.Web.Controllers
 			return Json("ok");
 		}
 
+        [ActionName("Index")]
+        [HttpGet]
 		public ActionResult Show(Guid id, string token, string timeStamp)
 		{
 			AuthenticateToken(id, token, timeStamp);
@@ -155,7 +161,9 @@ namespace AddonTemplate.Web.Controllers
 			return View(viewModel);
 		}
 
-		[RequireBasicAuthentication("Heroku")]
+        [RequireBasicAuthentication("AppHarbor")]
+        [ActionName("Index")]
+        [HttpPut]
 		public ActionResult Update(Guid id, PlatformRequest planUpdateRequest)
 		{
 			Plan plan;
