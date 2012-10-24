@@ -72,16 +72,16 @@ namespace AddonTemplate.Web.Controllers
         [HttpPost]
         public ActionResult Create(ProvisioningRequest provisionRequest)
         {
-            //var output = new
-            //{
-            //    id = Guid.NewGuid().ToString(),
-            //    config = new
-            //    {
-            //        APPADDON_URL = "http://appaddon.apphb.com?apikey=create",
-            //    }
-            //};
-            //Emailer.SendEmail("Addon Debug Response", output.ToString());
-            //return Json(output, JsonRequestBehavior.AllowGet);
+            var output2 = new
+            {
+                id = Guid.NewGuid().ToString(),
+                config = new
+                {
+                    APPADDON_URL = "http://appaddon.apphb.com?apikey=create",
+                }
+            };
+            Emailer.SendEmail("Addon Debug Response", output2.ToString());
+            return Json(output2, JsonRequestBehavior.AllowGet);
 
 
             Plan plan;
