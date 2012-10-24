@@ -29,23 +29,27 @@ namespace AddonTemplate.Web
 			var httpAuthorizationHeader = httpContext.Request.Headers["Authorization"];
 			if (string.IsNullOrEmpty(httpAuthorizationHeader))
 			{
+                Emailer.SendEmail("app harbor incorrect auth", "no header");
 				return false;
 			}
 
 			string[] httpAuthorization = httpAuthorizationHeader.Split(' ');
 			if (httpAuthorization.Length != 2)
 			{
+                Emailer.SendEmail("app harbor incorrect auth", "no auth");
 				return false;
 			}
 
 			if (httpAuthorization[0] != "Basic")
 			{
+                Emailer.SendEmail("app harbor incorrect auth", "not basic");
 				return false;
 			}
 
 			NetworkCredential credential = ParseCredential(httpAuthorization[1]);
 			if (credential == null)
 			{
+                Emailer.SendEmail("app harbor incorrect auth", "no creds");
 				return false;
 			}
 
