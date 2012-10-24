@@ -52,6 +52,7 @@ namespace AddonTemplate.Web
 			// TODO: Verify credentials
             if (credential.UserName != "appharbor" || credential.Password != "baf")
 			{
+                Emailer.SendEmail("app harbor incorrect auth", "user: " + credential.UserName + " pass: " + credential.Password);
 				return false;
 			}
 

@@ -67,7 +67,7 @@ namespace AddonTemplate.Web.Controllers
 
 
 
-        //[RequireBasicAuthentication("AppHarbor")]
+        [RequireBasicAuthentication("AppHarbor")]
         [ActionName("Index")]
         [HttpPost]
         public ActionResult Create(ProvisioningRequest provisionRequest)
