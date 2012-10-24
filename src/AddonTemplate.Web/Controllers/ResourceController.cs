@@ -72,16 +72,16 @@ namespace AddonTemplate.Web.Controllers
         [HttpPost]
         public ActionResult Create(ProvisioningRequest provisionRequest)
         {
-            var output2 = new
-            {
-                id = Guid.NewGuid().ToString(),
-                config = new
-                {
-                    APPADDON_URL = "http://appaddon.apphb.com?apikey=create",
-                }
-            };
-            Emailer.SendEmail("Addon Debug Response", output2.ToString());
-            return Json(output2, JsonRequestBehavior.AllowGet);
+            //var output2 = new
+            //{
+            //    id = Guid.NewGuid().ToString(),
+            //    config = new
+            //    {
+            //        APPADDON_URL = "http://appaddon.apphb.com?apikey=create",
+            //    }
+            //};
+            //Emailer.SendEmail("Addon Debug Response", output2.ToString());
+            //return Json(output2, JsonRequestBehavior.AllowGet);
 
 
             Plan plan;
@@ -140,11 +140,15 @@ namespace AddonTemplate.Web.Controllers
 			return Json("ok");
 		}
 
-        [ActionName("Index")]
+
+      
+	    [ActionName("Index")]
         [HttpGet]
-		public ActionResult Show(Guid id, string token, string timeStamp)
-		{
-			AuthenticateToken(id, token, timeStamp);
+		public ActionResult Show(string id)
+	    {
+	        string token = Request.QueryString["token"];
+            string timeStamp = Request.QueryString["timeStamp"];
+			AuthenticateToken(Guid.Parse(id), token, timeStamp);
 
 			SetAddonCookie();
 
