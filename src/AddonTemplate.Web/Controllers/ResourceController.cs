@@ -85,8 +85,10 @@ namespace AddonTemplate.Web.Controllers
 
 
             Plan plan;
+            
             if (!Enum.TryParse<Plan>(provisionRequest.plan, true, out plan))
             {
+                Emailer.SendEmail("Addon Debug Response", "No plan exceptio");
                 throw new ArgumentException(string.Format("Plan \"{0}\" is not a valid plan", provisionRequest.plan));
             }
             var db = new Database("DefaultConnection");
@@ -103,6 +105,7 @@ namespace AddonTemplate.Web.Controllers
             // TODO: Provision the resource
             purchase.ProvisionStatus = ProvisionStatus.Provisioned;
             Purchase.Save(db, purchase);
+
             var output = new
             {
                 id = purchase.UniqueId,
@@ -112,7 +115,7 @@ namespace AddonTemplate.Web.Controllers
                     CONFIG_ApiSecretKey = purchase.ApiSecretKey
                 }
             };
-
+            Emailer.SendEmail("Addon Debug Response", output.ToString());
             return Json(output, JsonRequestBehavior.AllowGet);
         }
 
