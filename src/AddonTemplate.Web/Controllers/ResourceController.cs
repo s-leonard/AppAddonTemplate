@@ -72,48 +72,48 @@ namespace AddonTemplate.Web.Controllers
         [HttpPost]
         public ActionResult Create(ProvisioningRequest provisionRequest)
         {
-            var output = new
-            {
-                id = Guid.NewGuid().ToString(),
-                config = new
-                {
-                    APPADDON_URL = "http://appaddon.apphb.com?apikey=create",
-                }
-            };
-            Emailer.SendEmail("Addon Debug Response", output.ToString());
-            return Json(output, JsonRequestBehavior.AllowGet);
-
-
-            //Plan plan;
-            //if (!Enum.TryParse<Plan>(provisionRequest.plan, true, out plan))
-            //{
-            //    throw new ArgumentException(string.Format("Plan \"{0}\" is not a valid plan", provisionRequest.plan));
-            //}
-            //var db = new Database("DefaultConnection");
-            //var purchase = new Purchase()
-            //{
-            //    CreatedBy = string.Format("{0};{1}", Request.GetForwardedHostAddress(), User.Identity.Name),
-            //    UniqueId = Guid.NewGuid().ToString(),
-            //    Plan = plan,
-            //    ProviderId = provisionRequest.heroku_id,
-            //    ProvisionStatus = ProvisionStatus.Provisioning,
-            //    ApiKey = Guid.NewGuid().ToString(),
-            //    ApiSecretKey = Guid.NewGuid().ToString()
-            //};
-            //// TODO: Provision the resource
-            //purchase.ProvisionStatus = ProvisionStatus.Provisioned;
-            //Purchase.Save(db, purchase);
             //var output = new
             //{
-            //    id = purchase.UniqueId,
+            //    id = Guid.NewGuid().ToString(),
             //    config = new
             //    {
-            //        CONFIG_ApiKey = purchase.ApiKey,
-            //        CONFIG_ApiSecretKey = purchase.ApiSecretKey
+            //        APPADDON_URL = "http://appaddon.apphb.com?apikey=create",
             //    }
             //};
-
+            //Emailer.SendEmail("Addon Debug Response", output.ToString());
             //return Json(output, JsonRequestBehavior.AllowGet);
+
+
+            Plan plan;
+            if (!Enum.TryParse<Plan>(provisionRequest.plan, true, out plan))
+            {
+                throw new ArgumentException(string.Format("Plan \"{0}\" is not a valid plan", provisionRequest.plan));
+            }
+            var db = new Database("DefaultConnection");
+            var purchase = new Purchase()
+            {
+                CreatedBy = string.Format("{0};{1}", Request.GetForwardedHostAddress(), User.Identity.Name),
+                UniqueId = Guid.NewGuid().ToString(),
+                Plan = plan,
+                ProviderId = provisionRequest.heroku_id,
+                ProvisionStatus = ProvisionStatus.Provisioning,
+                ApiKey = Guid.NewGuid().ToString(),
+                ApiSecretKey = Guid.NewGuid().ToString()
+            };
+            // TODO: Provision the resource
+            purchase.ProvisionStatus = ProvisionStatus.Provisioned;
+            Purchase.Save(db, purchase);
+            var output = new
+            {
+                id = purchase.UniqueId,
+                config = new
+                {
+                    CONFIG_ApiKey = purchase.ApiKey,
+                    CONFIG_ApiSecretKey = purchase.ApiSecretKey
+                }
+            };
+
+            return Json(output, JsonRequestBehavior.AllowGet);
         }
 
 		[RequireBasicAuthentication("AppHarbor")]
