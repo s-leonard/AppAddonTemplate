@@ -66,8 +66,7 @@ namespace AddonTemplate.Web.Controllers
                 id = Guid.NewGuid().ToString(),
                 config = new
                 {
-                    CONFIG_ApiKey = Guid.NewGuid().ToString(),
-                    CONFIG_ApiSecretKey = Guid.NewGuid().ToString()
+                    APPADDON_URL = "http://appaddon.apphb.com/",
                 }
             };
 
