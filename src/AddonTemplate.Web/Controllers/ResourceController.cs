@@ -76,6 +76,7 @@ namespace AddonTemplate.Web.Controllers
         public ActionResult Create(ProvisioningRequest provisionRequest)
         {
             string requestBody;
+            Request.InputStream.Position = 0;
             using (Stream receiveStream = Request.InputStream)
             {
                 using (var readStream = new StreamReader(receiveStream, Encoding.UTF8))
