@@ -16,58 +16,6 @@ namespace AddonTemplate.Web.Controllers
 	public class ResourceController : Controller
 	{
 
-        //public ActionResult Index()
-        //{
-        //    var output = new
-        //        {
-        //            id = Guid.NewGuid().ToString(),
-        //            config = new
-        //                {
-        //                    APPADDON_URL = "http://appaddon.apphb.com?apikey=1234",
-        //                }
-        //        };
-        //    Emailer.SendEmail("Addon Debug Response", output.ToString());
-        //    return Json(output, JsonRequestBehavior.AllowGet);
-        //}
-
-	    //[RequireBasicAuthentication("AppHarbor")]
-        //public ActionResult Create(ProvisioningRequest provisionRequest)
-        //{
-        //    Plan plan;
-        //    if (!Enum.TryParse<Plan>(provisionRequest.plan, true, out plan))
-        //    {
-        //        throw new ArgumentException(string.Format("Plan \"{0}\" is not a valid plan", provisionRequest.plan));
-        //    }
-
-        //    var resource = new Resource
-        //    {
-        //        CreatedBy = string.Format("{0};{1}", Request.GetForwardedHostAddress(), User.Identity.Name),
-        //        Id = Guid.NewGuid(),
-        //        Plan = plan,
-        //        ProviderId = provisionRequest.heroku_id,
-        //        ProvisionStatus = ProvisionStatus.Provisioning,
-        //    };
-			
-        //    // TODO: Persist the resource
-
-        //    // TODO: Provision the resource
-
-        //    resource.ProvisionStatus = ProvisionStatus.Provisioned;
-			
-        //    // TODO: Persist the status change
-
-        //    var output = new
-        //    {
-        //        id = resource.Id,
-        //        config = new
-        //        {
-        //            CONFIG_VAR = "CONFIGURATION_VALUE",
-        //        }
-        //    };
-
-        //    return Json(output);
-        //}
-
 
 
         [RequireBasicAuthentication("AppHarbor")]
@@ -75,32 +23,12 @@ namespace AddonTemplate.Web.Controllers
         [HttpPost]
         public ActionResult Create(ProvisioningRequest provisionRequest)
         {
-            string requestBody = Request.GetBody();
-
-            Emailer.SendEmail("Addon Action", "Create - " + requestBody);
-            //var output2 = new
-            //{
-            //    id = Guid.NewGuid().ToString(),
-            //    config = new
-            //    {
-            //        APPADDON_URL = "http://appaddon.apphb.com?apikey=create",
-            //    }
-            //};
-            //Emailer.SendEmail("Addon Debug Response", output2.ToString());
-            //return Json(output2, JsonRequestBehavior.AllowGet);
-
             try
             {
+                string requestBody = Request.GetBody();
+                //Emailer.SendEmail("Addon Action", "Create - " + requestBody);
                 provisionRequest = JsonConvert.DeserializeObject<ProvisioningRequest>(requestBody);
-            }
-            catch (Exception ex)
-            {
 
-                Emailer.SendEmail("Addon - Error Deserialize Body", ex.Message);
-            }
-
-            try
-            {
                 Plan plan;
 
                 if (!Enum.TryParse<Plan>(provisionRequest.plan, true, out plan))
