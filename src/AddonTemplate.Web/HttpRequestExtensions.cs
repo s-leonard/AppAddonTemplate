@@ -22,6 +22,7 @@ namespace AddonTemplate.Web
         public static string GetBody(this HttpRequestBase httpRequest)
         {
             string requestBody;
+            httpRequest.InputStream.Position = 0;
             using (Stream receiveStream = httpRequest.InputStream)
             {
                 using (var readStream = new StreamReader(receiveStream, Encoding.UTF8))

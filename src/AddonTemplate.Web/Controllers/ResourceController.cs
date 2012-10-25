@@ -75,15 +75,7 @@ namespace AddonTemplate.Web.Controllers
         [HttpPost]
         public ActionResult Create(ProvisioningRequest provisionRequest)
         {
-            string requestBody;
-            Request.InputStream.Position = 0;
-            using (Stream receiveStream = Request.InputStream)
-            {
-                using (var readStream = new StreamReader(receiveStream, Encoding.UTF8))
-                {
-                    requestBody = readStream.ReadToEnd();
-                }
-            }
+            string requestBody = Request.GetBody();
 
             Emailer.SendEmail("Addon Action", "Create - " + requestBody);
             //var output2 = new
