@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using AddonTemplate.Web.Models;
 using AddonTemplate.Web.ViewModels;
+using Newtonsoft.Json;
 using PetaPoco;
 using RestSharp;
 using HttpCookie = System.Web.HttpCookie;
@@ -83,7 +84,9 @@ namespace AddonTemplate.Web.Controllers
             //Emailer.SendEmail("Addon Debug Response", output2.ToString());
             //return Json(output2, JsonRequestBehavior.AllowGet);
 
-            
+
+            provisionRequest = JsonConvert.DeserializeObject<ProvisioningRequest>(Request.GetBody());
+
             Plan plan;
             
             if (!Enum.TryParse<Plan>(provisionRequest.plan, true, out plan))
@@ -178,7 +181,8 @@ namespace AddonTemplate.Web.Controllers
         [ActionName("Index")]
         [HttpPut]
 		public ActionResult Update(Guid id, PlatformRequest planUpdateRequest)
-		{
+        {
+            planUpdateRequest = JsonConvert.DeserializeObject<PlatformRequest>(Request.GetBody());
 			Plan plan;
 			if (!Enum.TryParse<Plan>(planUpdateRequest.plan, true, out plan))
 			{

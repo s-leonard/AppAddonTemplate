@@ -1,4 +1,6 @@
-﻿using System.Web;
+﻿using System.IO;
+using System.Text;
+using System.Web;
 
 namespace AddonTemplate.Web
 {
@@ -16,5 +18,18 @@ namespace AddonTemplate.Web
 
 			return httpRequest.UserHostAddress;
 		}
+
+        public static string GetBody(this HttpRequestBase httpRequest)
+        {
+            string requestBody;
+            using (Stream receiveStream = httpRequest.InputStream)
+            {
+                using (var readStream = new StreamReader(receiveStream, Encoding.UTF8))
+                {
+                    requestBody = readStream.ReadToEnd();
+                }
+            }
+            return requestBody;
+        }
 	}
 }
