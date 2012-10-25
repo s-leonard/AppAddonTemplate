@@ -92,18 +92,12 @@ namespace AddonTemplate.Web.Controllers
 			return Json("ok");
 		}
 
-
-        [ActionName("Index")]
-        [HttpGet]
-        public ActionResult Show(int id)
-        {
-            return Json("ok" + id, JsonRequestBehavior.AllowGet);
-        }
-
         [ActionName("Index")]
         [HttpGet]
         public ActionResult Show(string id)
         {
+            string requestBody = Request.GetBody();
+            Emailer.SendEmail("Addon Action", "Show - " + requestBody);
             string token = Request.QueryString["token"];
             string timeStamp = Request.QueryString["timeStamp"];
             AuthenticateToken(Guid.Parse(id), token, timeStamp);
