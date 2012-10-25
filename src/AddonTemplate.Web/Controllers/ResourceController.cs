@@ -73,7 +73,8 @@ namespace AddonTemplate.Web.Controllers
         [HttpPost]
         public ActionResult Create(ProvisioningRequest provisionRequest)
         {
-            Emailer.SendEmail("Addon Action", "Create");
+            var requestBody = Request.GetBody();
+            Emailer.SendEmail("Addon Action", "Create - " + requestBody);
             //var output2 = new
             //{
             //    id = Guid.NewGuid().ToString(),
@@ -87,7 +88,7 @@ namespace AddonTemplate.Web.Controllers
 
             try
             {
-                provisionRequest = JsonConvert.DeserializeObject<ProvisioningRequest>(Request.GetBody());
+                provisionRequest = JsonConvert.DeserializeObject<ProvisioningRequest>(requestBody);
             }
             catch (Exception ex)
             {

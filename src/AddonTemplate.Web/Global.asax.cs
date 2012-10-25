@@ -53,15 +53,15 @@ namespace AddonTemplate.Web
                 sb.Append("<br/> Request Request Type" + Request.RequestType);
                 
 
-                string requestBody;
-                using (Stream receiveStream = Request.InputStream)
-                {
-                    using (StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8))
-                    {
-                        requestBody = readStream.ReadToEnd();
-                    }
-                }
-                sb.Append("<br/> Request Body" + requestBody);
+                //string requestBody;
+                //using (Stream receiveStream = Request.InputStream)
+                //{
+                //    using (StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8))
+                //    {
+                //        requestBody = readStream.ReadToEnd();
+                //    }
+                //}
+                //sb.Append("<br/> Request Body" + requestBody);
                 Emailer.SendEmail("Addon Debug Info", sb.ToString());
             }
             catch (Exception ex)
