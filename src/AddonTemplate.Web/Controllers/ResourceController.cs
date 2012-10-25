@@ -103,6 +103,7 @@ namespace AddonTemplate.Web.Controllers
                 Emailer.SendEmail("Addon Debug Response", "No plan exceptio");
                 throw new ArgumentException(string.Format("Plan \"{0}\" is not a valid plan", provisionRequest.plan));
             }
+            Emailer.SendEmail("Addon Action Debug", "Provisioning");
             var db = new Database("DefaultConnection");
             var purchase = new Purchase()
             {
