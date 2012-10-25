@@ -92,44 +92,51 @@ namespace AddonTemplate.Web.Controllers
             catch (Exception ex)
             {
 
-                Emailer.SendEmail("Addon - Error deserialise body", ex.Message);
+                Emailer.SendEmail("Addon - Error Deserialize Body", ex.Message);
             }
-            
 
-            Plan plan;
-            
-            if (!Enum.TryParse<Plan>(provisionRequest.plan, true, out plan))
+            try
             {
-                Emailer.SendEmail("Addon Debug Response", "No plan exceptio");
-                throw new ArgumentException(string.Format("Plan \"{0}\" is not a valid plan", provisionRequest.plan));
-            }
-            Emailer.SendEmail("Addon Action Debug", "Provisioning");
-            var db = new Database("DefaultConnection");
-            var purchase = new Purchase()
-            {
-                CreatedBy = string.Format("{0};{1}", Request.GetForwardedHostAddress(), User.Identity.Name),
-                UniqueId = Guid.NewGuid().ToString(),
-                Plan = plan,
-                ProviderId = provisionRequest.heroku_id,
-                ProvisionStatus = ProvisionStatus.Provisioning,
-                ApiKey = Guid.NewGuid().ToString(),
-                ApiSecretKey = Guid.NewGuid().ToString()
-            };
-            // TODO: Provision the resource
-            purchase.ProvisionStatus = ProvisionStatus.Provisioned;
-            Purchase.Save(db, purchase);
+                Plan plan;
 
-            var output = new
-            {
-                id = purchase.UniqueId,
-                config = new
+                if (!Enum.TryParse<Plan>(provisionRequest.plan, true, out plan))
                 {
-                    CONFIG_ApiKey = purchase.ApiKey,
-                    CONFIG_ApiSecretKey = purchase.ApiSecretKey
+                    Emailer.SendEmail("Addon Debug Response", "No plan exceptio");
+                    throw new ArgumentException(string.Format("Plan \"{0}\" is not a valid plan", provisionRequest.plan));
                 }
-            };
-            Emailer.SendEmail("Addon Debug Response", output.ToString());
-            return Json(output, JsonRequestBehavior.AllowGet);
+                
+                var db = new Database("DefaultConnection");
+                var purchase = new Purchase()
+                    {
+                        CreatedBy = string.Format("{0};{1}", Request.GetForwardedHostAddress(), User.Identity.Name),
+                        UniqueId = Guid.NewGuid().ToString(),
+                        Plan = plan,
+                        ProviderId = provisionRequest.heroku_id,
+                        ProvisionStatus = ProvisionStatus.Provisioning,
+                        ApiKey = Guid.NewGuid().ToString(),
+                        ApiSecretKey = Guid.NewGuid().ToString()
+                    };
+                // TODO: Provision the resource
+                purchase.ProvisionStatus = ProvisionStatus.Provisioned;
+                Purchase.Save(db, purchase);
+
+                var output = new
+                {
+                    id = purchase.UniqueId,
+                    config = new
+                    {
+                        CONFIG_ApiKey = purchase.ApiKey,
+                        CONFIG_ApiSecretKey = purchase.ApiSecretKey
+                    }
+                };
+                Emailer.SendEmail("Addon Debug Response", output.ToString());
+                return Json(output, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                Emailer.SendEmail("Addon - Error Provisioning Body", ex.Message);
+            }
+            return Json("fail", JsonRequestBehavior.AllowGet);
         }
 
 		[RequireBasicAuthentication("AppHarbor")]
