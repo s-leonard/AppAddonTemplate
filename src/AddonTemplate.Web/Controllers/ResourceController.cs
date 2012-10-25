@@ -83,7 +83,7 @@ namespace AddonTemplate.Web.Controllers
             //Emailer.SendEmail("Addon Debug Response", output2.ToString());
             //return Json(output2, JsonRequestBehavior.AllowGet);
 
-
+            
             Plan plan;
             
             if (!Enum.TryParse<Plan>(provisionRequest.plan, true, out plan))
@@ -141,32 +141,38 @@ namespace AddonTemplate.Web.Controllers
 		}
 
 
-      
-	    [ActionName("Index")]
+        [ActionName("Index")]
         [HttpGet]
-		public ActionResult Show(string id)
-	    {
-	        string token = Request.QueryString["token"];
+        public ActionResult Show(int id)
+        {
+            return Json("ok" + id, JsonRequestBehavior.AllowGet);
+        }
+
+        [ActionName("Index")]
+        [HttpGet]
+        public ActionResult Show(string id)
+        {
+            string token = Request.QueryString["token"];
             string timeStamp = Request.QueryString["timeStamp"];
-			AuthenticateToken(Guid.Parse(id), token, timeStamp);
+            AuthenticateToken(Guid.Parse(id), token, timeStamp);
 
-			SetAddonCookie();
+            SetAddonCookie();
 
-			var headerClient = new RestClient("http://appharbor.com/");
-			var headerRequest = new RestRequest("header", Method.GET);
-			var headerResponse = headerClient.Execute(headerRequest);
+            var headerClient = new RestClient("http://appharbor.com/");
+            var headerRequest = new RestRequest("header", Method.GET);
+            var headerResponse = headerClient.Execute(headerRequest);
 
-			// TODO: Fetch the resource from persistance store
-			var resource = new Resource();
+            // TODO: Fetch the resource from persistance store
+            var resource = new Resource();
 
-			// TODO: Populate the view model with the resource data
-			var viewModel = new ResourceViewModel
-			{
-				Header = headerResponse.Content,
-			};
-            
-			return View(viewModel);
-		}
+            // TODO: Populate the view model with the resource data
+            var viewModel = new ResourceViewModel
+            {
+                Header = headerResponse.Content,
+            };
+
+            return View(viewModel);
+        }
 
         [RequireBasicAuthentication("AppHarbor")]
         [ActionName("Index")]

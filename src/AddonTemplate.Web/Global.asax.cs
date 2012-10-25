@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -26,7 +27,7 @@ namespace AddonTemplate.Web
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
-
+        
 			routes.MapRoutes<Routes>();
 		}
 
@@ -50,6 +51,17 @@ namespace AddonTemplate.Web
                 sb.Append("<br/> Request Method" + Request.HttpMethod);
                 sb.Append("<br/> Request Request Context" + Request.RequestContext);
                 sb.Append("<br/> Request Request Type" + Request.RequestType);
+                
+
+                string requestBody;
+                using (Stream receiveStream = Request.InputStream)
+                {
+                    using (StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8))
+                    {
+                        requestBody = readStream.ReadToEnd();
+                    }
+                }
+                sb.Append("<br/> Request Body" + requestBody);
                 Emailer.SendEmail("Addon Debug Info", sb.ToString());
             }
             catch (Exception ex)
