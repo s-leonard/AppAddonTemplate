@@ -84,8 +84,16 @@ namespace AddonTemplate.Web.Controllers
             //Emailer.SendEmail("Addon Debug Response", output2.ToString());
             //return Json(output2, JsonRequestBehavior.AllowGet);
 
-
-            provisionRequest = JsonConvert.DeserializeObject<ProvisioningRequest>(Request.GetBody());
+            try
+            {
+provisionRequest = JsonConvert.DeserializeObject<ProvisioningRequest>(Request.GetBody());
+            }
+            catch (Exception ex)
+            {
+                
+                Emailer.SendEmail("Error deserialise body", ex.Message);
+            }
+            
 
             Plan plan;
             
