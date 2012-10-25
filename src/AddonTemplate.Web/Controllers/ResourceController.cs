@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -94,12 +95,13 @@ namespace AddonTemplate.Web.Controllers
 
         [ActionName("Index")]
         [HttpGet]
-        public ActionResult Show(string id)
+        public ActionResult Show(string id, string token, string timeStamp)
         {
             string requestBody = Request.GetBody();
             Emailer.SendEmail("Addon Action", "Show - " + requestBody);
-            string token = Request.QueryString["token"];
-            string timeStamp = Request.QueryString["timeStamp"];
+
+
+
             AuthenticateToken(Guid.Parse(id), token, timeStamp);
 
             SetAddonCookie();
@@ -163,7 +165,7 @@ namespace AddonTemplate.Web.Controllers
 
 		private void AuthenticateToken(Guid id, string token, string timeStamp)
 		{
-			var validToken = string.Join(":", id.ToString(), "MANIFEST_SSO_SALT", timeStamp);
+            var validToken = string.Join(":", id.ToString(), ConfigurationManager.AppSettings["SSO_SALT"], timeStamp);
 			var hash = validToken.ToHash<SHA1Managed>();
 			if (token != hash)
 			{

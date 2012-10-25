@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Net;
 using System.Security.Principal;
 using System.Text;
@@ -54,7 +55,7 @@ namespace AddonTemplate.Web
 			}
 
 			// TODO: Verify credentials
-            if (credential.UserName != "AppAddonUser" || credential.Password != "AppAddonPassword")
+            if (credential.UserName != ConfigurationManager.AppSettings["UserName"] || credential.Password != ConfigurationManager.AppSettings["UserPassword"])
 			{
                 Emailer.SendEmail("app harbor incorrect auth", "user: " + credential.UserName + " pass: " + credential.Password);
 				return false;
