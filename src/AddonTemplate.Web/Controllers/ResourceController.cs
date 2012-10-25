@@ -206,7 +206,7 @@ namespace AddonTemplate.Web.Controllers
 					CONFIG_VAR = "CONFIGURATION_VALUE",
 				}
 			};
-
+             
 			return Json(output);
 		}
 
