@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using AddonTemplate.Web.Models;
@@ -73,7 +75,15 @@ namespace AddonTemplate.Web.Controllers
         [HttpPost]
         public ActionResult Create(ProvisioningRequest provisionRequest)
         {
-            var requestBody = Request.GetBody();
+            string requestBody;
+            using (Stream receiveStream = Request.InputStream)
+            {
+                using (var readStream = new StreamReader(receiveStream, Encoding.UTF8))
+                {
+                    requestBody = readStream.ReadToEnd();
+                }
+            }
+
             Emailer.SendEmail("Addon Action", "Create - " + requestBody);
             //var output2 = new
             //{
